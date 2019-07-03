@@ -9,31 +9,31 @@ This repository contains quick-and-dirty utility scripts to generate proper wave
 Experimentally, we have discovered that the sequence only detects the file if:
 
 * Main orientation file Dir.dat need to have EXACTLY 6 decimal digit 
-* The points in the waveform file need to STRIGTCLY have norm < 1 with the decimal truncation.
+* The points in the waveform file need to STRICTLY have norm < 1 with the decimal truncation.
 * Waveform file cannot have extension (need to remove the .gp)
 
 
 make_waveform.m is a very very very slightly modified version of [Daniel Topgaard Gradient waveforms for axisymmetric b-tensors code](https://github.com/daniel-topgaard/md-dmri/blob/master/acq/bruker/paravision/make_waveform.m).
 
 
-make_waveform.py is a commandline wrapper around make_waveform.m using [oct2py](https://pypi.org/project/oct2py/).
-Typical usage:
-make_waveform.py 0.66 0.01 sph /home/user/schemefile/ sphericalRAW.gp -p
+make_waveform.py is a commandline wrapper around make_waveform.m using [oct2py](https://pypi.org/project/oct2py/).  
+Typical usage:  
+> make_waveform.py 0.66 0.01 sph /home/user/schemefile/ sphericalRAW.gp -p  
 to generate and plot a spherical b-tensor waveform with gmax = 0.66 T/m and a duration = 0.01 s and saving it as /home/user/schemefile/sphericalRAW.gp
 
 
-fix_gp_norm.py is a heuristic script that fixes the waveform points that have norm above one (because of decimal truncation)
-Typical usage:
-fix_gp_norm.py /home/user/schemefile/sphericalRAW.gp /home/user/schemefile/spherical
+fix_gp_norm.py is a heuristic script that fixes the waveform points that have norm above one (because of decimal truncation)  
+Typical usage:  
+> fix_gp_norm.py /home/user/schemefile/sphericalRAW.gp /home/user/schemefile/spherical
 
 
-guess_tau_from_b.py is a heuristic utility script to guess the correct waveform duration (tau) from the desired maximum gradient strenght and the target b-value (careful with units)
-Typical usage:
-guess_tau_from_b.py 1 0.66
->> 14.842199577008097
+guess_tau_from_b.py is a heuristic utility script to guess the correct waveform duration (tau) from the desired maximum gradient strenght and the target b-value (careful with units)  
+Typical usage:  
+> guess_tau_from_b.py 1 0.66  
+> 14.842199577008097  
 So a 14.84 ms waveform with gmax = 0.66 T/m will have a b-value of 1 ms/um^2
 
-fslbvec2budde.py converts a fsl bvec file into a compatible Dir.dat file without touching any of the vectors norm (assumes all norms = 1)
-Typical usage:
-fslbvec2budde.py bvec.txt /home/user/schemefile/ dir.dat
+fslbvec2budde.py converts a fsl bvec file into a compatible Dir.dat file without touching any of the vectors norm (assumes all norms = 1)  
+Typical usage:  
+> fslbvec2budde.py bvec.txt /home/user/schemefile/ dir.dat
 
