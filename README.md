@@ -30,6 +30,11 @@ to generate and plot a spherical b-tensor waveform with gmax = 0.66 T/m and a du
 `14.842199577008097`   
 So a 14.84 ms waveform with gmax = 0.66 T/m will have a b-value of 1 ms/um^2
 
+**guess_G_from_b.py** is a heuristic utility script to guess the correct gradient strenght from the desired waveform duration and the target b-value (careful with units)  
+`guess_G_from_b.py 1 14.84`    
+`0.660146742717`   
+So a 14.84 ms waveform with gmax = 0.66 T/m will have a b-value of 1 ms/um^2
+
 **fslbvec2budde.py** converts a fsl bvec file into a compatible Dir.dat file without touching any of the vectors norm (assumes all norms = 1)  
 `fslbvec2budde.py bvec.txt /home/user/schemefile/ dir.dat`
 
