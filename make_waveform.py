@@ -46,7 +46,7 @@ def buildArgsParser():
         help='waveform duration in s [%(default)s]')
     p.add_argument(
         'shape', action='store', metavar='shape', type=str,
-        help='b-tensor shape, (lin, pla or sph)')
+        help='b-tensor shape, (lin, pro, sph, obl or sph)')
     p.add_argument(
         'outpath', action='store', metavar='outpath', type=str,
         help='waveform output folder path')
@@ -63,7 +63,6 @@ def buildArgsParser():
         '--phi', dest='phi', action='store',
         metavar='phi', type=float, default=0.0,
         help='Orientation of cone axis in lab frame [%(default)s]')
-
     p.add_argument(
         '-p', action='store_true', dest='plot', default=False,
         help='Plot waveform [%(default)s]')
@@ -96,12 +95,16 @@ def main():
     # custom zeta eventually
     if shape == 'lin':
         zeta = 0
+    elif shape == 'pro':
+        zeta = np.acos(np.sqrt(2. / 3)) # Approximately 35 deg for prolate shape
+    elif shape == 'sph':
+        zeta = np.math.acos(np.sqrt(1 / 3.))
+    elif shape == 'obl':
+        zeta = 70. * np.pi/180. # Hardcoded to 70 deg, to achive oblate b-tensor
     elif shape == 'pla':
         zeta = np.pi/2.
-    elif shape == 'sph':
-        zeta = np.math.acos(1/np.sqrt(3.))
     else:
-        parser.error('btensor shape (shape) need to be one of lin,pla,sph')
+        parser.error('btensor shape (shape) need to be one of lin, pro, sph, obl ,sph')
         return
 
     outpath = args.outpath
