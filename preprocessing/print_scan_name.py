@@ -5,9 +5,7 @@ from __future__ import division, print_function
 
 import argparse
 
-import nibabel as nib
 import numpy as np
-
 
 desciption = """
 Print scan custom name from acqp file
@@ -35,9 +33,25 @@ def main():
     # find the line
     pattern = "##$ACQ_scan_name="
     idx = np.where([ll[:len(pattern)] == pattern for ll in l])[0][0]
-
     # print the next one
     print(l[idx+1])
+
+
+    # pattern = "##$RG="
+    # idx = np.where([ll[:len(pattern)] == pattern for ll in l])[0][0]
+    # # read value
+    # RG = float(l[idx][len(pattern):].strip())
+    # print('RG = {}'.format(RG))
+
+
+    # # find the line
+    # pattern = "##$ACQ_CalibratedRG="
+    # idx = np.where([ll[:len(pattern)] == pattern for ll in l])[0][0]
+    # # print the next one
+    # print('CalibratedRG = {}'.format(l[idx+1]))
+
+
+
 
 if __name__ == "__main__":
     main()
