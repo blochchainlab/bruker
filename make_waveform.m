@@ -29,10 +29,9 @@ function b = make_waveform_param(gmax, tau, zeta, out_path, out_name, theta, phi
 	% zeta: half aperture of q cone, see Topgaard. Microporous Mesoporous Mater. 178, 60 (2013).
 	% http://dx.doi.org/10.1016/j.micromeso.2013.03.009
 	% zeta = acos(1/sqrt(3)); out_fn = fullfile(out_path,'axde_sphere.gp'); %sphere
-	% zeta = pi/2; out_fn = fullfile(out_path,'axde_plane.gp'); %plane
-	% zeta = 0; out_fn = fullfile(out_path,'axde_stick.gp'); %stick
-	% zeta = acos(sqrt(2/3)); out_fn = fullfile(out_path,'axde_cigar.gp'); %cigar 
-	% mic: from 0 to acos(1/sqrt(3)) == cigar
+	%zeta = pi/2; out_fn = fullfile(out_path,'axde_plane.gp'); %plane
+	%zeta = 0; out_fn = fullfile(out_path,'axde_stick.gp'); %stick
+	% zeta = acos(sqrt(2/3)); out_fn = fullfile(out_path,'axde_cigar.gp'); %cigar % mic: from 0 to acos(1/sqrt(3)) == cigar
 
 	out_fn = fullfile(out_path, out_name)
 
@@ -141,25 +140,12 @@ function b = make_waveform_param(gmax, tau, zeta, out_path, out_name, theta, phi
 		subplot(2,1,1)
 		%plot(t,gmax*re_gr,'r-',t,gmax*im_gr,'g-',t,gmax*ga,'b-',t,gmax*abs(gr),'k--')
 		plot(t,gmax*gx,'r-','LineWidth',2,t,gmax*gy,'g-','LineWidth',2,t,gmax*gz,'b-','LineWidth',2)
-		set(gca, 'fontsize', 20)
-		lgnd = legend('Gx', 'Gy', 'Gz')
-		set(lgnd,'color', 'none');
-		set(gca, 'fontsize', 20)
 		ylabel('g / Tm^-^1')
 		title(['b = ' num2str(b/1e9,2) '\cdot10^9 sm^-^2   q = ' num2str(qmax/2/pi/1e6,2) '\cdot10^6 m^-^1'])
-		set(gca, 'linewidth', 4, 'fontsize', 20)
 
 		subplot(2,1,2)
 		plot(t,dre_grdt,'r-','LineWidth',2,t,dim_grdt,'g-','LineWidth',2,t,dgadt,'b-','LineWidth',2,t,dgrdt,'k--','LineWidth',2)
-		set(gca, 'fontsize', 20)
-		lgnd = legend('d/dt Real(G)', 'd/dt Imag(G)', 'd/dt GA', 'd/dt GR')
-		set(lgnd, 'color', 'none');
-		set(gca, 'fontsize', 20)
 		xlabel('t / s'), ylabel('(dg/dt) / Tm^-^1s^-^1')
-		set(gca, 'fontsize', 20)
-
-		%ax=get(gcf, "currentaxes");
-		%set(ax, "fontsize", 20, "linewidth", 2);
 
 		uiwait(h);
 
