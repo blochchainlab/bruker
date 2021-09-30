@@ -131,8 +131,10 @@ def W2B(waveA, waveB, tA, tpause, G):
     return btensor,  eigval,  eigvec,  bval,  bs,  bp,  bl
 
 
-
-
+def compute_b_delta(eigenval, bval):
+    axisymaxis = int(np.round(np.argmin([np.abs(eigenval[2] - eigenval[1]), np.abs(eigenval[0] - eigenval[2]), np.abs(eigenval[0] - eigenval[1])])))
+    b_delta = 1 - 3*(0.5*(eigenval.sum()-eigenval[axisymaxis]))/bval
+    return b_delta
 
 
 
@@ -233,6 +235,8 @@ def main():
                                                                                        Gmax*1e-3)
 
 
+
+
     print('initial waveform btensor with Gmax (s/mm^2)')
     print(btensor_init*1e-6)
     print(' ')
@@ -252,11 +256,21 @@ def main():
     print('[{:.2f} {:.2f} {:.2f}]'.format(bs_init, bp_init, bl_init))
 
 
+    # guess axis of axisymmetry
+    # find the pair of eigenval most similar
+    axisymaxis = int(np.round(np.argmin([np.abs(eigval_init[2] - eigval_init[1]), np.abs(eigval_init[0] - eigval_init[2]), np.abs(eigval_init[0] - eigval_init[1])])))
+    print('\nAxis symmetry around eigenvect {}'.format(axisymaxis))
+    b_delta = 1 - 3*(0.5*(eigval_init.sum()-eigval_init[axisymaxis]))/bval_init
+    print('B-tensor shape [-0.5, 1] = {:.2f}'.format(b_delta))
+
+
+
     btensors = np.zeros((rot_mats.shape[0], 3, 3))
     eigenvec_max = np.zeros((rot_mats.shape[0], 3))
     eigenvec_min = np.zeros((rot_mats.shape[0], 3))
     eigenvals = np.zeros((rot_mats.shape[0], 3))
     bvals = np.zeros(rot_mats.shape[0])
+    b_deltas = np.zeros(rot_mats.shape[0])
     normalized_shape = np.zeros((rot_mats.shape[0], 3))
 
     for i in range(rot_mats.shape[0]):
@@ -300,6 +314,9 @@ def main():
         # print(bs_rot, bp_rot, bl_rot)
         normalized_shape[i] = bs_rot, bp_rot, bl_rot
 
+        # print(compute_b_delta(eigval_rot, bval_rot))
+        b_deltas[i] = compute_b_delta(eigval_rot, bval_rot)
+
 
     print('\nSaving flattened btensors (in s/mm^2) as...')
     print(baseout + '_btensor.txt')
@@ -324,6 +341,11 @@ def main():
     print('\nSaving normalized Westin shape (Sph, Pla, Lin) as...')
     print(baseout + '_wshape.txt')
     np.savetxt(baseout + '_wshape.txt', normalized_shape)
+
+    print('\nSaving b_delta shape as...')
+    print(baseout + '_bdelta.txt')
+    np.savetxt(baseout + '_bdelta.txt', b_deltas)
+
 
 
 
